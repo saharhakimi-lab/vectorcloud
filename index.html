@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>אקדמיית ILLUSTRATOR של האחוואנים - בניית ענן</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts - Assistant & Heebo -->
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&family=Heebo:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Assistant', 'Heebo', sans-serif;
+      background-color: #FAF7F0;
+    }
+    .cream-bg { background-color: #FAF7F0; }
+    .card-shadow { box-shadow: 0 4px 20px -2px rgba(139, 92, 26, 0.08); }
+    
+    /* מניעת הצגת פס גלילה מכוער בטאבים, תוך שמירה על גלילה חלקה באצבע/עכבר */
+    .tabs-scroll::-webkit-scrollbar {
+      display: none;
+    }
+    .tabs-scroll {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    
+    @keyframes tuvia-glow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(91, 95, 239, 0.55); }
+      50% { box-shadow: 0 0 0 14px rgba(91, 95, 239, 0); }
+    }
+    .tuvia-fab {
+      animation: tuvia-glow 2.2s infinite;
+    }
+  </style>
+</head>
+<body class="cream-bg text-stone-800 min-h-screen pb-12 transition-all duration-300">
+
+  <!-- 🌟 חלונית צפה מתוקנת - הבוט הוגבל לגודל כפתור מושלם ועגול שלא מסתיר את האתר 🌟 -->
+  <a href="https://gemini.google.com/gem/182jqjh6fxGeiMJ3R2si6dovgXIugR93N?usp=sharing" target="_blank" rel="noopener"
+     class="tuvia-fab fixed bottom-6 left-6 z-50 block w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden shadow-2xl transition duration-300 transform hover:scale-105 border-4 border-white bg-white">
+    <img src="https://lh3.googleusercontent.com/d/1BHxytxfATgrv3wpk_8slqpRX08p2Dzml" alt="טוביה הבוט" class="w-full h-full object-cover block">
+  </a>
+
+  <!-- חלון חגיגת סיום משימה -->
+  <div id="celebration-overlay" class="fixed inset-0 bg-purple-500/20 backdrop-blur-xs z-50 flex flex-col items-center justify-center hidden">
+    <div class="bg-white p-8 rounded-3xl shadow-2xl border-4 border-purple-500 text-center max-w-sm mx-4 transform scale-95 transition-transform duration-300">
+      <span class="text-7xl mb-4 block animate-bounce">🏆☁️⚡</span>
+      <h3 class="text-3xl font-extrabold text-purple-600 mb-2">איזה מלך אתה!</h3>
+      <p class="text-stone-700 font-bold text-lg mb-6">בנית ענן וקטורי מטורף כמו אחוואן אמיתי. כל הכבוד!</p>
+      <button onclick="closeCelebration()" class="bg-purple-600 hover:bg-purple-700 text-white font-black px-6 py-3 rounded-xl transition-all shadow-md">
+        יאללה, למשימה הבאה! 🚀
+      </button>
+    </div>
+  </div>
+
+  <!-- באנר עליון -->
+  <header class="bg-white border-b border-amber-100 shadow-xs sticky top-0 z-40 backdrop-blur-md bg-white/90">
+    <div class="max-w-7xl mx-auto px-4 py-3 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+      
+      <!-- לוגו וכותרת -->
+      <div class="flex items-center gap-3">
+        <div class="bg-purple-600 text-white p-3 rounded-2xl shadow-md rotate-[-2deg] font-black text-xl tracking-wider">
+          אקדמיית ILLUSTRATOR 🎨
+        </div>
+        <div>
+          <h1 class="text-xl sm:text-2xl font-black text-stone-900 leading-tight">קורס הפיצוחים של האחוואנים</h1>
+          <p class="text-xs sm:text-sm text-stone-500 font-medium">לומדים, מיישמים ומבינים את עולם הוקטור מאלף עד תיו 🚀</p>
+        </div>
+      </div>
+
+      <!-- סטטוס השיעור -->
+      <div class="bg-purple-50 px-4 py-2.5 rounded-xl border border-purple-100 text-purple-700 text-sm font-black">
+        נושא: יצירת ענן וקטורי מקצועי ☁️
+      </div>
+
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+    
+    <!-- תיבת מוטיבציה שבועית מהמנטור -->
+    <section class="bg-purple-50/50 border border-purple-100 rounded-3xl p-6 mb-8 flex flex-col md:flex-row justify-between items-center gap-4 card-shadow relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-24 h-24 bg-purple-200/20 rounded-full blur-2xl"></div>
+      <div class="flex items-center gap-4 relative z-10">
+        <span class="text-4xl hidden sm:inline">🧙‍♂️☁️</span>
+        <div>
+          <h4 class="text-purple-800 font-black text-lg">פינת המנטור המטורלל:</h4>
+          <p id="motivation-box" class="text-stone-700 font-bold text-md transition-all duration-300">לחצו על הכפתור משמאל או סמנו שלבים כדי לקבל זריקת אנרגיה מטורללת!</p>
+        </div>
+      </div>
+      <button 
+        onclick="triggerRandomMotivation()"
+        class="bg-purple-600 hover:bg-purple-700 active:scale-95 text-white font-black px-6 py-3 rounded-2xl shadow-md hover:shadow-lg transition-all text-sm whitespace-nowrap"
+      >
+        תדלק אותי במוטיבציה! ⚡
+      </button>
+    </section>
+
+    <!-- גריד ראשי דו-טורי -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- טור מרכזי -->
+      <section class="lg:col-span-12 flex flex-col gap-6">
+        
+        <!-- סרגל הטאבים הדינמי למעבר בין שיטות הבנייה -->
+        <div class="w-full overflow-hidden bg-white/40 p-2 rounded-2xl border border-stone-200/60 card-shadow">
+          <div id="tabs-container" class="tabs-scroll flex flex-nowrap overflow-x-auto gap-3 py-1 px-1">
+            <!-- הטאבים ייווצרו דינמית על ידי ה-JS -->
+          </div>
+        </div>
+
+        <!-- כרטיסיית תוכן השיעור הפעיל -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 card-shadow border border-stone-100 transition-all">
+          
+          <div class="border-b border-stone-100 pb-6 mb-6">
+            <span id="lesson-badge" class="bg-purple-100 text-purple-800 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider mb-3 inline-block">
+              טוען טכניקה...
+            </span>
+            <h2 id="lesson-title" class="text-2xl sm:text-3xl font-black text-stone-900 mb-2 leading-snug"></h2>
+            <p id="lesson-desc" class="text-stone-600 font-semibold text-base sm:text-lg mb-4 leading-relaxed"></p>
+            
+            <div id="lesson-encouragement" class="bg-[#FAF7F0] border-l-4 border-purple-500 p-4 rounded-xl text-stone-700 italic font-bold text-sm leading-relaxed"></div>
+          </div>
+
+          <!-- מד התקדמות מבוסס משימות -->
+          <div class="mb-6">
+            <div class="flex justify-between items-center mb-2">
+              <span class="font-extrabold text-stone-700 text-sm">התקדמות המשימה:</span>
+              <span id="progress-text" class="font-black text-purple-600 text-sm bg-purple-50 px-2.5 py-1 rounded-lg">0% הושלם</span>
+            </div>
+            <div class="w-full bg-stone-100 h-3 rounded-full overflow-hidden">
+              <div id="progress-bar" class="bg-purple-600 h-full rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <!-- שלבי המשימה עם סימון קל -->
+          <div class="space-y-4 mb-8">
+            <h3 class="font-black text-lg text-stone-900 mb-2">📋 שלבי העבודה שלך:</h3>
+            <div id="steps-container" class="space-y-4">
+              <!-- השלבים ייטענו דינמית -->
+            </div>
+          </div>
+
+          <!-- כפתור סיום משימה מרהיב -->
+          <div class="flex justify-end pt-4 border-t border-stone-100">
+            <button
+              id="finish-btn"
+              disabled
+              onclick="triggerCelebration()"
+              class="w-full sm:w-auto font-black px-8 py-4 rounded-2xl shadow-lg transition-all duration-300 text-center bg-stone-200 text-stone-400 cursor-not-allowed"
+            >
+              השלם את כל השלבים למעלה כדי לסיים
+            </button>
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+    <!-- פוטר -->
+    <footer class="text-center mt-12 pt-6 border-t border-stone-200 text-xs text-stone-500 font-medium">
+      <p>© 2026 אקדמיית אילוסטרייטור של האחוואנים. כל הזכויות שמורות למעצבי העל.</p>
+      <p class="mt-1 text-purple-600">״בסוף הכל זה פירוק צורות, שילובים וקבוצות, יא תותח.״</p>
+    </footer>
+
+  </main>
+
+  <script>
+    // מאגר השיעורים והמשימות - ענן באילוסטרייטור בשתי שיטות
+    const lessonsData = [
+      {
+        id: 1,
+        title: '🎯 שיטה א\': "איחוד וקטורי מוחלט" (Pathfinder)',
+        subtitle: 'חיבור באמצעות Pathfinder',
+        description: 'פירוק והרכבה של צורות יסוד ליצירת צורה אחת אחידה, נקייה וסופית (מושלם לחיתוכי לייזר ולוגו).',
+        encouragement: 'השיטה הקלאסית שרואים בצילום המסך! איחוד מלא של צורות מונע בלגנים בקווים החופפים!',
+        steps: [
+          { id: '1-1', text: 'בוחרים בכלי העיגול (Ellipse Tool - מקש L) ומציירים 3-4 עיגולים בגדלים שונים שחופפים זה לזה.' },
+          { id: '1-2', text: 'בוחרים בכלי המלבן (Rectangle Tool - מקש M) ומציירים מלבן שמכסה את כל הקצוות התחתונים של העיגולים כדי ליצור בסיס ישר.' },
+          { id: '1-3', text: 'בוחרים את כל הצורות יחד על ידי גרירת העכבר מעליהן (או Ctrl+A).' },
+          { id: '1-4', text: 'פותחים את פאנל ה-Pathfinder (אם הוא לא מופיע: Window > Pathfinder) ולוחצים על כפתור ה-Unite (הראשון משמאל).' },
+          { id: '1-5', text: 'בדיקת קסם: לחצו Ctrl+Y (מצב Outline) וודאו שכל הקווים הפנימיים נעלמו ונשאר רק קו מתאר חיצוני חלק ונקי!' }
+        ]
+      },
+      {
+        id: 2,
+        title: '🎯 שיטה ב\': "מלבן מעוגל והקבצה דינמית" (Group)',
+        subtitle: 'עיגול פינות + Group',
+        description: 'בניית בסיס ממלבן עם פינות מעוגלות לחלוטין, הוספת עיגולים נפוחים מלמעלה ושמירה כקבוצה הניתנת לעריכה.',
+        encouragement: 'היתרון המטורף כאן הוא הגמישות! תוכלו לשנות את הגודל של כל עיגול בנפרד גם בעתיד!',
+        steps: [
+          { id: '2-1', text: 'מציירים מלבן רחב במרכז משטח העבודה בעזרת כלי המלבן (Rectangle Tool - מקש M).' },
+          { id: '2-2', text: 'בוחרים את המלבן עם החץ השחור (V), תופסים את אחת מנקודות ה-Live Corners (העיגולים הקטנים בתוך הפינות) וגוררים פנימה עד הסוף לעיגול פינות מלא.' },
+          { id: '2-3', text: 'מציירים 2-3 מעגלים מעל המלבן המעוגל ליצירת הנפח העליון של הענן.' },
+          { id: '2-4', text: 'מבטלים לחלוטין את קו המתאר (Stroke) ועובדים רק עם צבע מילוי (Fill מלא) כדי שלא יראו קווים פנימיים.' },
+          { id: '2-5', text: 'בוחרים את כל האלמנטים יחד, לוחצים קליק ימני ובוחרים Group (או קיצור הדרך Ctrl+G). כעת הענן זז כיחידה אחת!' }
+        ]
+      }
+    ];
+
+    const encouragingQuotes = [
+      "פשששש יא תותח על! איזה דיוק של ענן!",
+      "אחוואניאסקי, אתה מרחף מעל האנקור-פוינטס כמו נשר זהב!",
+      "כל לחיצה שלך ב-Pathfinder היא יצירת אמנות וקטורית!",
+      "אילוסטרייטור בוכה בפינה מהרמה שאתה מציג כרגע!",
+      "אתה לא רק לומד, אתה הופך למאסטר בעיצוב אייקונים!",
+      "עיגול פינות חלק כמו חמאה! עבודה מדהימה!",
+      "התלמיד עלה על רבו! ענן מושלם, גאה בך ברמות!"
+    ];
+
+    let activeTab = 1;
+    let completedSteps = {};
+
+    function renderTabs() {
+      const container = document.getElementById('tabs-container');
+      container.innerHTML = '';
+      
+      lessonsData.forEach((lesson) => {
+        const isActive = activeTab === lesson.id;
+        const tabBtn = document.createElement('button');
+        
+        tabBtn.className = `flex-shrink-0 py-3 px-6 rounded-xl font-bold text-sm transition-all duration-300 flex flex-col items-center justify-center min-w-[190px] border ${
+          isActive 
+            ? 'bg-purple-600 text-white border-purple-600 shadow-md scale-[1.02]' 
+            : 'bg-transparent text-stone-600 border-stone-200 hover:bg-purple-50 hover:text-purple-600'
+        }`;
+        
+        tabBtn.innerHTML = `
+          <span class="text-[10px] uppercase tracking-wider ${isActive ? 'text-purple-200' : 'text-stone-400'}">טכניקה ${lesson.id}</span>
+          <span class="text-sm font-black mt-0.5 whitespace-nowrap">${lesson.subtitle}</span>
+        `;
+        
+        tabBtn.onclick = () => {
+          activeTab = lesson.id;
+          renderTabs();
+          renderActiveLesson();
+        };
+        
+        container.appendChild(tabBtn);
+      });
+    }
+
+    function renderActiveLesson() {
+      const lesson = lessonsData.find(l => l.id === activeTab);
+      if (!lesson) return;
+
+      document.getElementById('lesson-badge').innerText = `שיטה ${lesson.id} מתוך ${lessonsData.length}`;
+      document.getElementById('lesson-title').innerText = lesson.title;
+      document.getElementById('lesson-desc').innerText = lesson.description;
+      document.getElementById('lesson-encouragement').innerText = `💡 "${lesson.encouragement}"`;
+
+      const stepsContainer = document.getElementById('steps-container');
+      stepsContainer.innerHTML = '';
+
+      lesson.steps.forEach((step, index) => {
+        const isChecked = !!completedSteps[step.id];
+        const stepDiv = document.createElement('div');
+        stepDiv.className = `flex gap-4 p-4 rounded-2xl border transition-all cursor-pointer select-none items-start ${
+          isChecked 
+            ? 'bg-purple-50/30 border-purple-300' 
+            : 'bg-white border-stone-200 hover:border-stone-400'
+        }`;
+        
+        stepDiv.onclick = () => toggleStep(step.id);
+
+        stepDiv.innerHTML = `
+          <div class="w-8 h-8 rounded-xl flex items-center justify-center font-black shrink-0 transition-all ${
+            isChecked 
+              ? 'bg-purple-600 text-white rotate-[360deg]' 
+              : 'bg-stone-100 text-stone-600'
+          }">
+            ${isChecked ? `
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            ` : index + 1}
+          </div>
+          <p class="font-bold text-sm sm:text-base leading-relaxed ${
+            isChecked ? 'text-stone-400 line-through' : 'text-stone-800'
+          }">
+            ${step.text}
+          </p>
+        `;
+
+        stepsContainer.appendChild(stepDiv);
+      });
+
+      calculateProgress();
+    }
+
+    function toggleStep(stepId) {
+      completedSteps[stepId] = !completedSteps[stepId];
+      
+      if (completedSteps[stepId]) {
+        const randomEncouragement = encouragingQuotes[Math.floor(Math.random() * encouragingQuotes.length)];
+        document.getElementById('motivation-box').innerText = randomEncouragement;
+      }
+      
+      renderActiveLesson();
+    }
+
+    function calculateProgress() {
+      const lesson = lessonsData.find(l => l.id === activeTab);
+      if (!lesson) return;
+
+      const totalSteps = lesson.steps.length;
+      const completedCount = lesson.steps.filter(step => completedSteps[step.id]).length;
+      const progressPercent = Math.round((completedCount / totalSteps) * 100);
+
+      document.getElementById('progress-text').innerText = `${progressPercent}% הושלם`;
+      document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+
+      const finishBtn = document.getElementById('finish-btn');
+      if (progressPercent === 100) {
+        finishBtn.disabled = false;
+        finishBtn.innerText = '🎉 סיימתי את בניית הענן בהצלחה! 🎉';
+        finishBtn.className = 'w-full sm:w-auto font-black px-8 py-4 rounded-2xl shadow-lg transition-all duration-300 text-center bg-purple-600 text-white hover:bg-purple-700 hover:scale-105 active:scale-95 cursor-pointer';
+      } else {
+        finishBtn.disabled = true;
+        finishBtn.innerText = 'השלם את כל השלבים למעלה כדי לסיים';
+        finishBtn.className = 'w-full sm:w-auto font-black px-8 py-4 rounded-2xl shadow-lg transition-all duration-300 text-center bg-stone-200 text-stone-400 cursor-not-allowed';
+      }
+    }
+
+    // פונקציות חלון חגיגה ומודאלים
+    function triggerCelebration() {
+      const overlay = document.getElementById('celebration-overlay');
+      overlay.classList.remove('hidden');
+      setTimeout(() => {
+        overlay.querySelector('div').classList.remove('scale-95');
+        overlay.querySelector('div').classList.add('scale-100');
+      }, 50);
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeCelebration();
+      }
+    });
+
+    function closeCelebration() {
+      const overlay = document.getElementById('celebration-overlay');
+      overlay.querySelector('div').classList.remove('scale-100');
+      overlay.querySelector('div').classList.add('scale-95');
+      setTimeout(() => {
+        overlay.classList.add('hidden');
+      }, 150);
+    }
+
+    function triggerRandomMotivation() {
+      const randomQuote = encouragingQuotes[Math.floor(Math.random() * encouragingQuotes.length)];
+      document.getElementById('motivation-box').innerText = randomQuote;
+    }
+
+    window.onload = function() {
+      renderTabs();
+      renderActiveLesson();
+    };
+  </script>
+</body>
+</html>
